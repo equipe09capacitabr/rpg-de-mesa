@@ -12,7 +12,7 @@ struct ContentView: View {
         VStack(alignment:  .leading, spacing: 16) {
             HStack {
                 Text("Minhas Campanhas")
-                    .font(.largeTitle)
+                    .font(.title)
                     .bold()
                 Spacer()
                 
@@ -44,7 +44,10 @@ struct ContentView: View {
                     }
                 }
             }
-        }.padding(20)
+        }
+        .padding(20)
+        .foregroundStyle(.text)
+        .background(Color(.background))
     }
 }
 #Preview {

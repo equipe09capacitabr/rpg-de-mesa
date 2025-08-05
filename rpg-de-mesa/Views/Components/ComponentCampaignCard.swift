@@ -19,8 +19,7 @@ struct CampaignCard: View {
         }
         .padding()
         .frame(width: 353, height: 90, alignment: .leading)
-        .background(Color.blue.opacity(0.3))
+        .background(Color(.primary))
         .cornerRadius(8)
-        .shadow(radius: 4)
     }
 }
