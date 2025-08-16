@@ -11,15 +11,17 @@ struct CampaignCard: View {
     var date: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(name)
-                .font(.headline)
-            Text(date)
-                .font(.caption)
+        Button(action: {print("clicked") }) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(name)
+                    .font(.headline)
+                Text(date)
+                    .font(.caption)
+            }
+            .padding()
+            .frame(width: 353, height: 90, alignment: .leading)
+            .background(Color(.primary))
+            .cornerRadius(8)
         }
-        .padding()
-        .frame(width: 353, height: 90, alignment: .leading)
-        .background(Color(.primary))
-        .cornerRadius(8)
     }
 }

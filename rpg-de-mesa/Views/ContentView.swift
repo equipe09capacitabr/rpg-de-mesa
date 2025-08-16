@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = CampaignViewModel()
+    @State private var showSheet: Bool = false
+    
     var body: some View {
         VStack(alignment:  .leading, spacing: 16) {
             HStack {
@@ -17,11 +20,10 @@ struct ContentView: View {
                 Spacer()
                 
                 Button(action: {
-                    print(">>>")
+                    showSheet.toggle()
                 }) {
                     Image(systemName: "plus.circle.fill")
-                        .font(.largeTitle)
-                        .frame(width: 32, height: 32)
+                        .font(.system(size: 27))
                 }
             }
             
@@ -29,7 +31,7 @@ struct ContentView: View {
                 .font(.headline)
                 .padding(.top)
             
-            if let lastCampaign = mockCampaigns.last {
+            if let lastCampaign = viewModel.getLastCampaign() {
                 CampaignCard(name: lastCampaign.name, date: lastCampaign.date)
             }
             
@@ -39,17 +41,26 @@ struct ContentView: View {
             
             ScrollView {
                 VStack(spacing: 12) {
-                    ForEach(mockCampaigns) { campaign in
+                    ForEach(viewModel.campaignsList) { campaign in
                         CampaignCard(name: campaign.name, date: campaign.date)
                     }
                 }
             }
         }
-        .padding(20)
+        .padding(.horizontal, 20)
         .foregroundStyle(.text)
         .background(Color(.background))
+        
+        .sheet(isPresented: $showSheet) {
+            CampaignSheet()
+                .presentationBackground(Color(.background))
+                .presentationDetents([.height(543)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(30)
+        }
     }
 }
+
 #Preview {
     ContentView()
 }
