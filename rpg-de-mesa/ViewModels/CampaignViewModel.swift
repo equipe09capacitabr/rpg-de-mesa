@@ -6,22 +6,51 @@
 //
 
 import Foundation
+import SwiftUI
 
-class CampaignViewModel: ObservableObject {
-    @Published var campaignsList: [Campaign] = []
-    
-    init() {
-        loadMockdata()
+final class CampaignViewModel: ObservableObject {
+    @Published private(set) var campaigns: [Campaign] = [] {
+        didSet { saveToStorage() }
     }
     
-    private func loadMockdata() {
-        campaignsList = [Campaign(name: "Campanha Teste 01", date:"01/12/2024"),
-                         Campaign(name: "Campanha Teste 02", date:"08/02/2025"),
-                         Campaign(name: "Campanha Teste 03", date:"24/07/2025"),
-                         Campaign(name: "Campanha Teste 04", date: "28/07/2025")]
+    private let storageKey = "savedCampaigns"
+    
+    init() {
+        loadFromStorage()
+        //removeCampaign(campaigns.first!)
+    }
+    
+    func addCampaign(name: String, description: String) -> Campaign? {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else {
+            return nil
+        }
+        
+        let newCampaign = Campaign(name: name, description: description)
+        campaigns.append(newCampaign)
+        loadFromStorage()
+        return newCampaign
+    }
+    
+    func removeCampaign(_ campaign: Campaign) {
+        campaigns.removeAll { $0.id == campaign.id }
+    }
+    
+    private func saveToStorage() {
+        if let encoded = try? JSONEncoder().encode(campaigns) {
+            UserDefaults.standard.set(encoded, forKey: storageKey)
+        }
+    }
+    
+    private func loadFromStorage() {
+        guard let data = UserDefaults.standard.data(forKey: storageKey),
+              let savedCampaigns = try? JSONDecoder().decode([Campaign].self, from: data) else {
+            return
+        }
+        campaigns = savedCampaigns
     }
     
     func getLastCampaign() -> Campaign? {
-        return campaignsList.last
+        return campaigns.last
     }
 }

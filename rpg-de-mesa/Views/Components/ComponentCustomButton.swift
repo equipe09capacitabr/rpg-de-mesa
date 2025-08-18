@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CustomButton: View {
     var label: String
-    let action: () -> Void = {}
+    let action: () -> Void
     
     var body: some View {
         Button(action: action) {
@@ -24,5 +24,5 @@ struct CustomButton: View {
 }
 
 #Preview {
-    CustomButton(label: "Hello, World!")
+    CustomButton(label: "Hello, World!", action: {})
 }

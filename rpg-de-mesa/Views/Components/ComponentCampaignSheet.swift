@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CampaignSheet: View {
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel = CampaignViewModel()
     @State var text: String = ""
     @State var description: String = ""
     
@@ -40,7 +41,16 @@ struct CampaignSheet: View {
         
         Spacer()
         
-        CustomButton(label: "Salvar")
+        CustomButton(label: "Salvar") {
+            let newCampaign = viewModel.addCampaign(name: text, description: description)
+            if newCampaign != nil {
+                print(#function, "Campanha salva com sucesso")
+                
+                dismiss()
+            } else {
+                print(#function, "Falha ao salvar a campanha")
+            }
+        }
     }
 }
 

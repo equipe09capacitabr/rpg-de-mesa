@@ -6,9 +6,10 @@
 //
 import Foundation
 
-struct Campaign: Identifiable {
+struct Campaign: Identifiable, Codable {
     var id = UUID()
     var name: String
-    var date: String
+    var description: String?
+    var createdAt: Date = Date()
 }
 
