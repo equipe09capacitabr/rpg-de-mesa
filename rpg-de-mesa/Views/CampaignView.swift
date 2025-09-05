@@ -12,7 +12,7 @@ struct CampaignView: View {
     @State private var selectedSegment = 1
     
     var body: some View {
-        VStack(alignment:  .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text(campaign.name)
                     .font(.system(size: 28))
@@ -20,6 +20,7 @@ struct CampaignView: View {
                 
                 Spacer()
             }
+            
             if campaign.description == nil {
                 Text("Sem descrição.")
                     .font(.system(size: 16))
@@ -28,6 +29,7 @@ struct CampaignView: View {
                     .font(.subheadline)
                     .bold()
             }
+            
             Picker("Selecione", selection: $selectedSegment) {
                 Text("Personagem").tag(1)
                 Text("Itens").tag(2)
@@ -43,6 +45,7 @@ struct CampaignView: View {
                         
                         Text("Você ainda não criou seu personagem.")
                             .font(.system(size: 20))
+                            .bold()
                             .foregroundColor(.informational)
                             .multilineTextAlignment(.center)
                         
@@ -56,6 +59,7 @@ struct CampaignView: View {
                         
                         Text("Você ainda não criou um item.")
                             .font(.system(size: 20))
+                            .bold()
                             .foregroundColor(.informational)
                             .multilineTextAlignment(.center)
                         
@@ -69,6 +73,7 @@ struct CampaignView: View {
                         
                         Text("Você ainda não criou um inimigo.")
                             .font(.system(size: 20))
+                            .bold()
                             .foregroundColor(.informational)
                             .multilineTextAlignment(.center)
                         

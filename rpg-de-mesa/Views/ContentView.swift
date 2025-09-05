@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = CampaignViewModel()
+    @State private var viewModel = CampaignViewModel()
     @State private var selectedCampaign: Campaign? = nil
     @State private var showSheet: Bool = false
     
@@ -81,7 +81,7 @@ struct ContentView: View {
             .background(Color(.background))
             
             .sheet(isPresented: $showSheet) {
-                CampaignSheet()
+                CampaignSheet(viewModel: $viewModel)
                     .presentationBackground(Color(.background))
                     .presentationDetents([.height(543)])
                     .presentationDragIndicator(.visible)

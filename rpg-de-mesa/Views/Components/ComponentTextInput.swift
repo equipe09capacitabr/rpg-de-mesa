@@ -11,6 +11,7 @@ struct TextInput: View {
     var label: String
     var placeholder: String
     @Binding var text: String
+    var errorMessage: String? = nil
     
     var body: some View {
         VStack (alignment: .leading){
@@ -25,6 +26,12 @@ struct TextInput: View {
                 .background(Color.backgroundSecondary)
                 .cornerRadius(12)
                 .font(.system(size: 16))
+            
+            if let error = errorMessage {
+                Text(error)
+                    .foregroundColor(.red)
+                    .font(.system(size: 14))
+            }
         }
     }
 }

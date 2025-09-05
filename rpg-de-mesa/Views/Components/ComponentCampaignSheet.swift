@@ -9,9 +9,7 @@ import SwiftUI
 
 struct CampaignSheet: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = CampaignViewModel()
-    @State var text: String = ""
-    @State var description: String = ""
+    @Binding var viewModel: CampaignViewModel
     
     var body: some View {
         VStack {
@@ -35,25 +33,21 @@ struct CampaignSheet: View {
         .padding(.top, 26)
         .padding(.bottom, 47)
         
-        TextInput(label: "Nome*", placeholder: "Insira o nome da campanha", text: $text).padding(.bottom, 20)
+        TextInput(label: "Nome*", placeholder: "Insira o nome da campanha", text: $viewModel.name, errorMessage: viewModel.errorMessage)
+            .padding(.bottom, 20)
         
-        TextInput(label: "Descrição", placeholder: "Insira uma descrição", text: $description)
+        TextInput(label: "Descrição", placeholder: "Insira uma descrição", text: $viewModel.description)
         
         Spacer()
         
         CustomButton(label: "Salvar") {
-            let newCampaign = viewModel.addCampaign(name: text, description: description)
-            if newCampaign != nil {
-                print(#function, "Campanha salva com sucesso")
-                
+            viewModel.errorMessage = nil
+            
+             viewModel.createCampaign()
+            
+            if viewModel.errorMessage == nil {
                 dismiss()
-            } else {
-                print(#function, "Falha ao salvar a campanha")
             }
         }
     }
-}
-
-#Preview {
-    CampaignSheet()
 }

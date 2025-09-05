@@ -8,30 +8,38 @@
 import Foundation
 import SwiftUI
 
-final class CampaignViewModel: ObservableObject {
-    @Published private(set) var campaigns: [Campaign] = [] {
+@Observable
+final class CampaignViewModel {
+    private let validator = CampaignValidator()
+    var name: String = ""
+    var description: String = ""
+    
+    private(set) var campaigns: [Campaign] = [] {
         didSet { saveToStorage() }
     }
     
+    var errorMessage: String?
     private let storageKey = "savedCampaigns"
     
     init() {
         loadFromStorage()
-        //removeCampaign(campaigns.first!)
     }
     
-    func addCampaign(name: String, description: String) -> Campaign? {
-        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedName.isEmpty else {
-            return nil
+    func getLastCampaign() -> Campaign? {
+        return campaigns.last
+    }
+    
+    func createCampaign() {
+        do {
+            try validator.validate(name: name)
+            
+            let campaign = Campaign(name: name, description: description)
+            campaigns.append(campaign)
+        } catch {
+            errorMessage = error.localizedDescription
         }
-        
-        let newCampaign = Campaign(name: name, description: description)
-        campaigns.append(newCampaign)
-        loadFromStorage()
-        return newCampaign
     }
-    
+
     func removeCampaign(_ campaign: Campaign) {
         campaigns.removeAll { $0.id == campaign.id }
     }
@@ -48,9 +56,5 @@ final class CampaignViewModel: ObservableObject {
             return
         }
         campaigns = savedCampaigns
-    }
-    
-    func getLastCampaign() -> Campaign? {
-        return campaigns.last
     }
 }
